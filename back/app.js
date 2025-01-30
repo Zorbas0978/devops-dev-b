@@ -4,9 +4,12 @@ import usersRouter from './routers/users.router.js'
 import * as OpenApiValidator from 'express-openapi-validator'
 import ordersRouter from './routers/orders.router.js'
 import itemsRouter from './routers/items.router.js'
+import 'dotenv/config'
+
 
 // Import path module to get the current directory (node < 20.11.X)
 import * as url from 'url'
+import {configDotenv} from "dotenv";
 const __dirname = url.fileURLToPath(new URL('.', import.meta.url))
 
 // Initialize express
