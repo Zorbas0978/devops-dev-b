@@ -1,0 +1,79 @@
+name: test
+
+on:
+  push:
+
+env:
+  BACK_CONTAINER_NAME: shop_back
+  FRONT_CONTAINER_NAME: shop_front
+  BACK_PORT: 3000
+  FRONT_PORT: 5173
+  VITE_API_URL: $BACK_CONTAINER_NAME
+  DATABASE_URL: file:./dev.db
+  JWT_SECRET: secret
+  BCRYPT_SALT_ROUNDS: 10
+
+
+jobs:
+
+  build-backend:
+    runs-on: test
+    steps:
+      - uses: actions/checkout@v3
+      - name: Build backend
+        run : |
+          docker build -t $BACK_CONTAINER_NAME --no-cache \
+          --build-arg DATABASE_URL=$DATABASE_URL \
+          --build-arg JWT_SECRET=$JWT_SECRET \
+          --build-arg BCRYPT_SALT_ROUNDS=$BCRYPT_SALT_ROUNDS .
+
+  stop-backend:
+    runs-on: test
+    needs: [ build-backend ]
+    steps:
+      - name: Stop backend
+        run: |
+          docker stop $BACK_CONTAINER_NAME || true
+          docker rm $BACK_CONTAINER_NAME || true
+
+  deploy-backend:
+    runs-on: test
+    needs: [stop-backend]
+    steps:
+      - name: Deploy backend
+        run: |
+          docker tag $BACK_CONTAINER_NAME $BACK_CONTAINER_NAME
+          docker run -d --name $BACK_CONTAINER_NAME \
+              -e DATABASE_URL=DATABASE_URL \
+              -e JWT_SECRET=$JWT_SECRET \
+              -e BCRYPT_SALT_ROUNDS=$BCRYPT_SALT_ROUNDS \
+              -p $BACK_PORT:$BACK_PORT $BACK_CONTAINER_NAME
+
+  build-frontend:
+    runs-on: test
+    steps:
+      - uses: actions/checkout@v3
+      - name: Build frontend
+        run : |
+          docker build -t $FRONT_CONTAINER_NAME --no-cache \
+          --build-arg VITE_API_URL=$VITE_API_URL:$BACK_PORT .
+
+  stop-frontend:
+    runs-on: test
+    steps:
+      - name: Stop frontend
+        run: |
+          docker stop $FRONT_CONTAINER_NAME || true
+          docker rm $FRONT_CONTAINER_NAME || true
+
+  deploy-frontend:
+    runs-on: test
+    needs: [stop-frontend]
+    steps:
+      - name: Deploy frontend
+        run: |
+          docker tag $FRONT_CONTAINER_NAME $FRONT_CONTAINER_NAME
+          docker run -d --name $FRONT_CONTAINER_NAME \
+          -e VITE_API_URL=$VITE_API_URL \
+          -p $FRONT_PORT:$FRONT_PORT $FRONT_CONTAINER_NAME
+
