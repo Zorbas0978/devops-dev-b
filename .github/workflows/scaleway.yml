@@ -60,6 +60,7 @@ jobs:
 
   stop-frontend:
     runs-on: test
+    needs: [ build-frontend ]
     steps:
       - name: Stop frontend
         run: |
