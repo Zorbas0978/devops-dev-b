@@ -30,7 +30,7 @@ jobs:
           docker build -t ${{ secrets.CONTAINER_REGISTRY_ENDPOINT }}/$BACK_CONTAINER_NAME --no-cache \
           --build-arg DATABASE_URL=$DATABASE_URL \
           --build-arg JWT_SECRET=$JWT_SECRET \
-          --build-arg BCRYPT_SALT_ROUNDS=$BCRYPT_SALT_ROUNDS .
+          --build-arg BCRYPT_SALT_ROUNDS=$BCRYPT_SALT_ROUNDS ./back/
       - name: Push backend
         run: |
           docker push ${{ secrets.CONTAINER_REGISTRY_ENDPOINT }}/$BACK_CONTAINER_NAME
@@ -63,10 +63,14 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: docker/login-action@v3
+        with:
+          username: nologin
+          password: ${{ secrets.SCALEWAY_API_KEY }}
+          registry: ${{ secrets.CONTAINER_REGISTRY_ENDPOINT }}
       - name: Build frontend
         run : |
           docker build t ${{ secrets.CONTAINER_REGISTRY_ENDPOINT }}/$FRONT_CONTAINER_NAME --no-cache \
-          --build-arg VITE_API_URL=$VITE_API_URL:$BACK_PORT .
+          --build-arg VITE_API_URL=$VITE_API_URL:$BACK_PORT ./front/.
 
   stop-frontend:
     runs-on: ubuntu-latest
