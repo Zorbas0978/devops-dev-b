@@ -4,8 +4,8 @@ on:
   push:
 
 env:
-  BACK_CONTAINER_NAME: shop_back
-  FRONT_CONTAINER_NAME: shop_front
+  BACK_CONTAINER_NAME: shop-back
+  FRONT_CONTAINER_NAME: shop-front
   BACK_PORT: 3000
   FRONT_PORT: 5173
   VITE_API_URL: $BACK_CONTAINER_NAME
@@ -63,7 +63,8 @@ jobs:
       - name: Deploy backend
         run: |
           scw registry login
-          scw container container create namespace-id=${{ secrets.SCW_NS_ID }} name=$BACK_CONTAINER_NAME registry-image=${{ secrets.CONTAINER_REGISTRY_ENDPOINT }}/$BACK_CONTAINER_NAME 
+          scw container container create namespace-id=${{ secrets.SCW_NS_ID }} name=$BACK_CONTAINER_NAME registry-image=${{ secrets.CONTAINER_REGISTRY_ENDPOINT }}/$BACK_CONTAINER_NAME port=$  BACK_PORT: 3000
+
 
 
   build-frontend:
