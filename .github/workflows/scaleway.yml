@@ -48,6 +48,8 @@ jobs:
   deploy-backend:
     runs-on: ubuntu-latest
     needs: [stop-backend]
+    outputs:
+      backend_url: $${{ steps.deploy.outputs.DomainName }}
     steps:
       - uses: docker/login-action@v3
         with:
@@ -61,6 +63,7 @@ jobs:
           secret-key: ${{ secrets.SCALEWAY_API_KEY }}
           default-organization-id: ${{ secrets.SCW_ORGANISATION_ID }}
       - name: Deploy backend
+        id: deploy
         run: |
           scw registry login
           scw container container create namespace-id=${{ secrets.SCW_NS_ID }} name=$BACK_CONTAINER_NAME registry-image=${{ secrets.CONTAINER_REGISTRY_ENDPOINT }}/$BACK_CONTAINER_NAME:latest port="$BACK_PORT"
@@ -69,6 +72,7 @@ jobs:
 
   build-frontend:
     runs-on: ubuntu-latest
+    needs: [deploy-backend]
     steps:
       - uses: actions/checkout@v3
       - uses: docker/login-action@v3
@@ -77,7 +81,9 @@ jobs:
           password: ${{ secrets.SCALEWAY_API_KEY }}
           registry: ${{ secrets.CONTAINER_REGISTRY_ENDPOINT }}
       - name: Build frontend
+        env: ${{ needs.deploy-backend.outputs.test }}
         run : |
+          echo $BACKEND_URL
           docker build -t ${{ secrets.CONTAINER_REGISTRY_ENDPOINT }}/$FRONT_CONTAINER_NAME --no-cache \
           --build-arg VITE_API_URL=$VITE_API_URL:$BACK_PORT ./front/.
       - name: Push frontend
