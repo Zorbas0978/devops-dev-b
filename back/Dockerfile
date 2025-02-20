@@ -16,6 +16,7 @@ WORKDIR /app
 COPY . .
 
 #Install needed package
+RUN npx prisma generate dev
 RUN npm install
 
 EXPOSE 3000

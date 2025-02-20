@@ -91,7 +91,8 @@ jobs:
         run : |
           echo $BACKEND_URL
           docker build -t ${{ secrets.CONTAINER_REGISTRY_ENDPOINT }}/$FRONT_CONTAINER_NAME --no-cache \
-          --build-arg VITE_API_URL=https://${{ needs.deploy-backend.outputs.backend_url }} ./front/.
+          --build-arg VITE_API_URL=https://${{ needs.deploy-backend.outputs.backend_url }} \
+          ./front/.
       - name: Push frontend
         run : |
           docker push ${{ secrets.CONTAINER_REGISTRY_ENDPOINT }}/$FRONT_CONTAINER_NAME
