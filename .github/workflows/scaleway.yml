@@ -71,6 +71,9 @@ jobs:
         run : |
           docker build -t ${{ secrets.CONTAINER_REGISTRY_ENDPOINT }}/$FRONT_CONTAINER_NAME --no-cache \
           --build-arg VITE_API_URL=$VITE_API_URL:$BACK_PORT ./front/.
+      - name: Push frontend
+        run : |
+          docker push ${{ secrets.CONTAINER_REGISTRY_ENDPOINT }}/$BACK_CONTAINER_NAME
 
   stop-frontend:
     runs-on: ubuntu-latest
