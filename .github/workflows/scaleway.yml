@@ -54,6 +54,9 @@ jobs:
           username: nologin
           password: ${{ secrets.SCALEWAY_API_KEY }}
           registry: ${{ secrets.CONTAINER_REGISTRY_ENDPOINT }}
+      - uses: scaleway/action-scw@v0
+        with:
+          access-key: ${{ secrets.SCW_ACCESS_KEY }}
       - name: Deploy backend
         run: |
           scw registry login
@@ -98,9 +101,9 @@ jobs:
           password: ${{ secrets.SCALEWAY_API_KEY }}
           registry: ${{ secrets.CONTAINER_REGISTRY_ENDPOINT }}
       - uses: scaleway/action-scw@v0
-      - name: Deploy frontend
         with:
           access-key: ${{ secrets.SCW_ACCESS_KEY }}
+      - name: Deploy frontend
         run: |
           scw registry login
           scw container deploy name=$FRONT_CONTAINER_NAME \
