@@ -51,7 +51,6 @@ jobs:
     steps:
       - name: Deploy backend
         run: |
-          docker tag $BACK_CONTAINER_NAME $BACK_CONTAINER_NAME
           docker run -d --name $BACK_CONTAINER_NAME \
               -e DATABASE_URL=DATABASE_URL \
               -e JWT_SECRET=$JWT_SECRET \
@@ -90,7 +89,6 @@ jobs:
     steps:
       - name: Deploy frontend
         run: |
-          docker tag $FRONT_CONTAINER_NAME $FRONT_CONTAINER_NAME
           docker run -d --name $FRONT_CONTAINER_NAME \
           -e VITE_API_URL=$VITE_API_URL \
           -p $FRONT_PORT:$FRONT_PORT $FRONT_CONTAINER_NAME
