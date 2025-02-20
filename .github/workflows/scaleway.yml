@@ -69,7 +69,7 @@ jobs:
           registry: ${{ secrets.CONTAINER_REGISTRY_ENDPOINT }}
       - name: Build frontend
         run : |
-          docker build t ${{ secrets.CONTAINER_REGISTRY_ENDPOINT }}/$FRONT_CONTAINER_NAME --no-cache \
+          docker build -t ${{ secrets.CONTAINER_REGISTRY_ENDPOINT }}/$FRONT_CONTAINER_NAME --no-cache \
           --build-arg VITE_API_URL=$VITE_API_URL:$BACK_PORT ./front/.
 
   stop-frontend:
