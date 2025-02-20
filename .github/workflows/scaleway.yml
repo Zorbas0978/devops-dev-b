@@ -49,7 +49,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [stop-backend]
     outputs:
-      backend_url: $${{ steps.extract-domain.outputs.domain-name }}
+      backend_url: ${{ steps.extract-domain.outputs.domain-name }}
     steps:
       - uses: docker/login-action@v3
         with:
