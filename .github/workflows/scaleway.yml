@@ -60,6 +60,9 @@ jobs:
           secret-key: ${{ secrets.SCALEWAY_API_KEY }}
       - name: Deploy backend
         run: |
+          scw init non-interactive \
+            --access-key ${{secrets.SCW_ACCESS_KEY}}
+            --secret_key ${{secrets.SCALEWAY_API_KEY}}
           scw registry login
           scw container deploy name=$FRONT_CONTAINER_NAME \
             namespace-id=${{ secrets.SCW_NS_ID }} \
@@ -107,8 +110,11 @@ jobs:
           secret-key: ${{ secrets.SCALEWAY_API_KEY }}
       - name: Deploy frontend
         run: |
+          scw init non-interactive \
+            --access-key ${{secrets.SCW_ACCESS_KEY}}
+            --secret_key ${{secrets.SCALEWAY_API_KEY}}
           scw registry login
           scw container deploy name=$FRONT_CONTAINER_NAME \
             namespace-id=${{ secrets.SCW_NS_ID }} \
             image=rg.fr-par.scw.cloud/ns-decombestheffo-theo/$FRONT_CONTAINER_NAME:latest
-
+          
