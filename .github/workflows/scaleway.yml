@@ -66,7 +66,7 @@ jobs:
         id: deploy
         run: |
           scw registry login
-          scw container container create namespace-id=${{ secrets.SCW_NS_ID }} name=$BACK_CONTAINER_NAME registry-image=${{ secrets.CONTAINER_REGISTRY_ENDPOINT }}/$BACK_CONTAINER_NAME:latest port="$BACK_PORT" | tee test.txt
+          scw container container create namespace-id=${{ secrets.SCW_NS_ID }} name=$BACK_CONTAINER_NAME registry-image=${{ secrets.CONTAINER_REGISTRY_ENDPOINT }}/$BACK_CONTAINER_NAME:latest port="$BACK_PORT" | tee result.txt
       - name: Extract DomainName
         id: extract-domain
         run: |
