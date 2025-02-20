@@ -56,11 +56,11 @@ jobs:
           registry: ${{ secrets.CONTAINER_REGISTRY_ENDPOINT }}
       - name: Deploy backend
         run: |
-          docker run -d --name $BACK_CONTAINER_NAME \
-              -e DATABASE_URL=DATABASE_URL \
-              -e JWT_SECRET=$JWT_SECRET \
-              -e BCRYPT_SALT_ROUNDS=$BCRYPT_SALT_ROUNDS \
-              -p $BACK_PORT:$BACK_PORT $BACK_CONTAINER_NAME
+          scw registry login
+          scw container deploy name=$FRONT_CONTAINER_NAME \
+            namespace-id=${{ secrets.SCW_NS_ID }} \
+            image=rg.fr-par.scw.cloud/ns-decombestheffo-theo/$FRONT_CONTAINER_NAME:latest
+
 
   build-frontend:
     runs-on: ubuntu-latest
@@ -97,9 +97,13 @@ jobs:
           username: nologin
           password: ${{ secrets.SCALEWAY_API_KEY }}
           registry: ${{ secrets.CONTAINER_REGISTRY_ENDPOINT }}
+      - uses: scaleway/action-scw@v0
       - name: Deploy frontend
+        with:
+          access-key: ${{ secrets.SCW_ACCESS_KEY }}
         run: |
-          docker run -d --name $FRONT_CONTAINER_NAME \
-          -e VITE_API_URL=$VITE_API_URL \
-          -p $FRONT_PORT:$FRONT_PORT $FRONT_CONTAINER_NAME
+          scw registry login
+          scw container deploy name=$FRONT_CONTAINER_NAME \
+            namespace-id=${{ secrets.SCW_NS_ID }} \
+            image=rg.fr-par.scw.cloud/ns-decombestheffo-theo/$FRONT_CONTAINER_NAME:latest
 
