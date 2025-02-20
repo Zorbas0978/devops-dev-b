@@ -104,6 +104,7 @@ jobs:
           registry: ${{ secrets.CONTAINER_REGISTRY_ENDPOINT }}
       - uses: scaleway/action-scw@v0
         with:
+          save-config: 'true'
           access-key: ${{ secrets.SCW_ACCESS_KEY }}
           secret-key: ${{ secrets.SCALEWAY_API_KEY }}
       - name: Deploy frontend
