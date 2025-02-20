@@ -61,7 +61,7 @@ jobs:
       - name: Deploy backend
         run: |
           scw init non-interactive \
-            --access-key ${{secrets.SCW_ACCESS_KEY}}
+            --access-key ${{secrets.SCW_ACCESS_KEY}} \
             --secret_key ${{secrets.SCALEWAY_API_KEY}}
           scw registry login
           scw container deploy name=$FRONT_CONTAINER_NAME \
