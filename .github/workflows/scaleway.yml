@@ -59,6 +59,7 @@ jobs:
           save-config: 'true'
           access-key: ${{ secrets.SCW_ACCESS_KEY }}
           secret-key: ${{ secrets.SCALEWAY_API_KEY }}
+          default-organization-id: ${{ secrets.SCW_ORGANISATION_ID }}
       - name: Deploy backend
         run: |
           scw registry login
@@ -107,6 +108,7 @@ jobs:
           save-config: 'true'
           access-key: ${{ secrets.SCW_ACCESS_KEY }}
           secret-key: ${{ secrets.SCALEWAY_API_KEY }}
+          default-organization-id: ${{ secrets.SCW_ORGANISATION_ID }}
       - name: Deploy frontend
         run: |
           scw init non-interactive \
