@@ -63,9 +63,7 @@ jobs:
       - name: Deploy backend
         run: |
           scw registry login
-          namespace-id=${{ secrets.SCW_NS_ID }} \
-          name=$BACK_CONTAINER_NAME \
-          registry-image=${{ secrets.CONTAINER_REGISTRY_ENDPOINT }}/$BACK_CONTAINER_NAME \
+          scw container container create namespace-id=${{ secrets.SCW_NS_ID }} name=$BACK_CONTAINER_NAME registry-image=${{ secrets.CONTAINER_REGISTRY_ENDPOINT }}/$BACK_CONTAINER_NAME 
 
 
   build-frontend:
@@ -112,8 +110,4 @@ jobs:
       - name: Deploy frontend
         run: |
           scw registry login
-          scw container container create \
-          namespace-id=${{ secrets.SCW_NS_ID }} \
-          name=$FRONT_CONTAINER_NAME \
-          registry-image=${{ secrets.CONTAINER_REGISTRY_ENDPOINT }}/$FRONT_CONTAINER_NAME \
-          port="80"
+          scw container container create namespace-id=${{ secrets.SCW_NS_ID }} name=$FRONT_CONTAINER_NAME registry-image=${{ secrets.CONTAINER_REGISTRY_ENDPOINT }}/$FRONT_CONTAINER_NAME port="80"
