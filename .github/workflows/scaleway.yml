@@ -63,7 +63,7 @@ jobs:
       - name: Deploy backend
         run: |
           scw registry login
-          scw container container create namespace-id=${{ secrets.SCW_NS_ID }} name=$BACK_CONTAINER_NAME registry-image=${{ secrets.CONTAINER_REGISTRY_ENDPOINT }}/$BACK_CONTAINER_NAME:latest port="$BACK_PORT" 3000
+          scw container container create namespace-id=${{ secrets.SCW_NS_ID }} name=$BACK_CONTAINER_NAME registry-image=${{ secrets.CONTAINER_REGISTRY_ENDPOINT }}/$BACK_CONTAINER_NAME:latest port="$BACK_PORT"
 
 
 
