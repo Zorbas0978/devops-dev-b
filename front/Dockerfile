@@ -1,4 +1,4 @@
-FROM node:18
+FROM node:18 as build
 
 #Set args
 ARG VITE_API_URL
